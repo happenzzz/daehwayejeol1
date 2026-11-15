@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상황에 알맞은 대화 예절 짝 연습</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fffaf3; --ink:#2d2a3e; --sub:#6b6880;
+  --pink:#ff8fab; --orange:#ffb35c; --yellow:#ffd95a; --green:#7fd18b; --sky:#6cc4f5; --purple:#b49cf2;
+  --pinkL:#ffe3ea; --skyL:#dff2ff; --yellowL:#fff4c7; --greenL:#e2f7e5; --purpleL:#eee7ff;
+  --title:'Jua','Pretendard','Malgun Gothic',sans-serif;
+  --body:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);word-break:keep-all;
+  background-image:radial-gradient(circle at 8% 12%,#ffe3ea 0 90px,transparent 91px),radial-gradient(circle at 94% 88%,#dff2ff 0 120px,transparent 121px);
+  background-attachment:fixed;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer;border:none}
+.wrap{max-width:1280px;margin:0 auto;padding:18px 18px 40px}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.logo{font-family:var(--title);font-size:clamp(22px,2.6vw,32px);display:flex;align-items:center;gap:8px;cursor:pointer}
+.logo .rain{display:inline-flex;gap:3px}
+.logo .rain i{width:10px;height:26px;border-radius:6px;display:block}
+.top .sp{flex:1}
+.chip{background:#fff;border:3px solid #2d2a3e;border-radius:999px;padding:7px 14px;font-weight:800;font-size:16px;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 0 #2d2a3e}
+.chip:active{transform:translateY(2px);box-shadow:0 1px 0 #2d2a3e}
+
+.fsBtn{position:fixed;bottom:12px;right:12px;z-index:20;width:44px;height:44px;border-radius:12px;background:#fff;border:3px solid #2d2a3e;font-size:20px;font-weight:900;opacity:.55}
+.fsBtn:hover{opacity:1}
+.praise{font-size:clamp(16px,1.7vw,19px);font-weight:800;color:#d6345c;margin:-2px 0 4px}
+/* home */
+.hero{background:#fff;border:4px solid #2d2a3e;border-radius:28px;padding:22px 24px;box-shadow:0 6px 0 #2d2a3e;text-align:center}
+.hero h1{font-family:var(--title);font-weight:400;font-size:clamp(34px,5vw,64px);line-height:1.25;margin:10px 0 4px}
+.drawBtn{margin:18px auto 6px;display:flex;align-items:center;justify-content:center;gap:12px;font-family:var(--title);font-size:clamp(30px,4vw,46px);
+  background:var(--pink);color:#fff;border:5px solid #2d2a3e;border-radius:26px;padding:16px 46px;box-shadow:0 8px 0 #2d2a3e;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+.drawBtn:active{transform:translateY(5px);box-shadow:0 3px 0 #2d2a3e}
+.drawBtn:disabled{opacity:.7}
+
+
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+.card{position:relative;background:#fff;border:4px solid #2d2a3e;border-radius:20px;padding:12px 8px 12px;text-align:center;box-shadow:0 5px 0 #2d2a3e;transition:transform .08s}
+.card .em{font-size:clamp(30px,3.4vw,42px);line-height:1.1}
+.card .no{position:absolute;top:-12px;left:-10px;width:36px;height:36px;border-radius:50%;background:var(--yellow);border:3px solid #2d2a3e;font-family:var(--title);font-size:20px;display:flex;align-items:center;justify-content:center}
+.card .ttl{font-weight:800;font-size:clamp(14px,1.45vw,17px);margin-top:6px;line-height:1.3;word-break:keep-all}
+.card .tag{display:inline-block;margin-top:6px;font-size:13px;font-weight:800;border-radius:999px;padding:2px 10px}
+.card.done{background:#f3f3f3}
+.card.done::after{content:"✔";position:absolute;top:-12px;right:-10px;width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;border:3px solid #2d2a3e;font-size:20px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.card.hl{transform:translateY(-6px) scale(1.06);background:var(--yellowL);border-color:#e0557a;box-shadow:0 8px 0 #e0557a}
+.card.pick{animation:pick .5s ease 2}
+@keyframes pick{50%{transform:scale(1.14)}}
+
+.t-상대{background:var(--pinkL);color:#c2335a}
+.t-장소{background:var(--skyL);color:#1f7ab0}
+.t-목적{background:var(--greenL);color:#2c8a3c}
+.t-방식{background:var(--purpleL);color:#6a4bc7}
+
+
+/* situation */
+.sit{display:none}
+.sitHead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:4px solid #2d2a3e;border-radius:24px;padding:12px 18px;box-shadow:0 5px 0 #2d2a3e}
+.sitHead .big{font-size:clamp(40px,4.6vw,58px)}
+.sitHead .num{font-family:var(--title);font-size:18px;color:var(--sub)}
+.sitHead h2{font-family:var(--title);font-weight:400;font-size:clamp(26px,3.1vw,38px);line-height:1.2;word-break:keep-all}
+.sitHead .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.sitHead .tags span{font-size:15px;font-weight:800;border-radius:999px;padding:3px 12px}
+.scene{margin-top:12px;background:var(--yellowL);border:3px dashed var(--orange);border-radius:18px;padding:12px 18px;font-size:clamp(17px,1.8vw,21px);font-weight:600;line-height:1.55;word-break:keep-all}
+.scene b{font-family:var(--title);font-weight:400;color:#c76a00;margin-right:6px}
+
+.roles{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:stretch}
+.role{flex:1;min-width:200px;display:flex;align-items:center;gap:10px;border:3px solid #2d2a3e;border-radius:18px;padding:8px 14px;font-weight:800;font-size:clamp(17px,1.8vw,21px)}
+.role .re{font-size:34px}
+.role small{display:block;font-size:14px;color:var(--sub);font-weight:700}
+.role.r0{background:var(--skyL)} .role.r1{background:var(--pinkL)}
+.swap{background:var(--purple);color:#fff;border:3px solid #2d2a3e;border-radius:18px;padding:8px 16px;font-weight:900;font-size:18px;box-shadow:0 4px 0 #2d2a3e}
+.swap:active{transform:translateY(3px);box-shadow:0 1px 0 #2d2a3e}
+
+.script{margin-top:14px;background:#fff;border:4px solid #2d2a3e;border-radius:24px;padding:16px 16px 8px;box-shadow:0 5px 0 #2d2a3e}
+.line{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start}
+.line.right{flex-direction:row-reverse}
+.ava{flex:none;width:56px;text-align:center}
+.ava .e{font-size:36px;line-height:1}
+.ava .n{font-size:13px;font-weight:800;color:var(--sub);margin-top:2px;line-height:1.2;word-break:keep-all}
+.bub{max-width:78%;border:3px solid #2d2a3e;border-radius:20px;padding:10px 16px;font-size:clamp(19px,2vw,24px);font-weight:600;line-height:1.5;word-break:keep-all}
+.line.left .bub{background:var(--skyL);border-top-left-radius:6px}
+.line.right .bub{background:var(--pinkL);border-top-right-radius:6px}
+.bub i{font-style:normal;color:var(--sub);font-size:.82em;font-weight:700}
+.bub.blank{background:#fff !important;border-style:dashed;border-width:4px;border-color:#e0557a;min-width:min(520px,70%)}
+.blank .q{font-family:var(--title);font-size:clamp(22px,2.3vw,28px);color:#e0557a}
+.blank .hint{display:block;font-size:clamp(15px,1.55vw,18px);color:#5b5772;font-weight:700;margin-top:2px}
+.blank .hint::before{content:"💡 "}
+.exBtn{margin-top:8px;background:var(--yellow);border:3px solid #2d2a3e;border-radius:12px;padding:5px 12px;font-weight:800;font-size:15px}
+.ex{display:none;margin-top:8px;background:var(--greenL);border-radius:12px;padding:8px 12px;font-size:clamp(17px,1.8vw,21px);color:#22672e;font-weight:700}
+.ex.show{display:block}
+.ex::before{content:"예시 ";font-size:13px;background:#2c8a3c;color:#fff;border-radius:6px;padding:2px 6px;margin-right:6px;vertical-align:middle}
+
+.bottom{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:14px}
+.panel{background:#fff;border:4px solid #2d2a3e;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 #2d2a3e}
+.panel h3{font-family:var(--title);font-weight:400;font-size:24px;margin-bottom:8px}
+.pointBox{display:none;background:var(--purpleL);border-radius:14px;padding:10px 14px;font-size:clamp(17px,1.8vw,21px);font-weight:700;line-height:1.5;word-break:keep-all}
+.pointBox.show{display:block}
+.openPoint{background:var(--sky);color:#fff;border:3px solid #2d2a3e;border-radius:14px;padding:8px 16px;font-weight:900;font-size:18px}
+.check label{display:flex;align-items:center;gap:10px;font-size:clamp(16px,1.7vw,19px);font-weight:700;padding:6px 4px;cursor:pointer;word-break:keep-all}
+.check input{width:26px;height:26px;accent-color:#2c8a3c;flex:none}
+
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.actions .drawBtn{margin:0;font-size:clamp(26px,3vw,36px);padding:12px 34px}
+.ghost{background:#fff;border:4px solid #2d2a3e;border-radius:22px;padding:12px 22px;font-weight:900;font-size:clamp(18px,2vw,22px);box-shadow:0 6px 0 #2d2a3e}
+.ghost:active{transform:translateY(4px);box-shadow:0 2px 0 #2d2a3e}
+
+@media (max-width:900px){.grid{grid-template-columns:repeat(4,1fr)}.bottom{grid-template-columns:1fr}}
+@media (max-width:640px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .bub{max-width:100%}.bub.blank{min-width:0}
+  .ava{width:46px}.ava .e{font-size:30px}
+  .drawBtn{padding:14px 26px}
+  .wrap{padding:10px 10px 30px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <button class="fsBtn" onclick="toggleFS()" aria-label="전체화면">⛶</button>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="hero">
+      <h1>대화 예절 짝 연습 프로그램</h1>
+      <button class="drawBtn" id="drawBtn" onclick="draw()">🎲 상황 뽑기</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- SITUATION -->
+  <section class="sit" id="sit">
+    <div class="sitHead">
+      <div class="big" id="sEmoji"></div>
+      <div style="flex:1;min-width:220px">
+        <div class="num" id="sNum"></div>
+        <h2 id="sTitle"></h2>
+        <div class="tags" id="sTags"></div>
+      </div>
+    </div>
+    <div class="scene" id="sScene"></div>
+    <div class="roles">
+      <div class="role r0" id="role0"></div>
+      <button class="swap" onclick="swapRoles()">🔄 역할 바꾸기</button>
+      <div class="role r1" id="role1"></div>
+    </div>
+    <div class="script" id="script"></div>
+    <div class="bottom">
+      <div class="panel">
+        <h3>🌟 대화 예절 포인트</h3>
+        <button class="openPoint" id="openPoint" onclick="showPoint()">대화를 마친 뒤 눌러 보세요</button>
+        <div class="pointBox" id="pointBox"></div>
+      </div>
+      <div class="panel check" id="checks">
+        <h3>👏 점검하고 칭찬하기</h3>
+        <p class="praise">이걸로 짝을 칭찬해 봅시다.</p>
+        <label><input type="checkbox"> 상황에 알맞은 목소리 크기로 말했어요.</label>
+        <label><input type="checkbox"> 상대를 생각하며 공손한 말투로 말했어요.</label>
+        <label><input type="checkbox"> 역할을 바꾸어 한 번 더 연습했어요.</label>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="drawBtn" onclick="nextSituation()">🎲 다른 상황 뽑기</button>
+      <button class="ghost" onclick="goHome()">🏠 처음 화면</button>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ---------- 상황 데이터 ---------- */
+// {나} 는 '나' 역할을 맡은 학생 이름으로 바뀝니다.
+const S = [
+ {e:"👵", t:"할머니께서 안경을 찾으실 때", tags:["상대"],
+  scene:"거실에서 동화책을 읽고 있는데, 할머니께서 안경을 찾으세요. 안경은 텔레비전 옆 탁자 위에 있어요.",
+  roles:[{n:"할머니",e:"👵"},{n:"나",e:"🧒",me:1}],
+  lines:[
+   {r:0,t:"{나:야}, 할머니 안경이 어디 있는지 아니?"},
+   {r:1,b:1,h:"하던 일을 멈추고 할머니를 바라보며, 높임말로 위치를 알려 드려요.",x:"(책을 내려놓고) 할머니, 안경은 텔레비전 옆 탁자 위에 있어요."},
+   {r:0,t:"어디 보자… 할머니 눈에는 잘 안 보이는구나."},
+   {r:1,b:1,h:"도와드리겠다고 공손하게 여쭈어요.",x:"제가 가져다드릴까요?"},
+   {r:0,t:"고맙구나. 우리 {나:가} 참 공손하게 말하네."}],
+  point:"웃어른과 대화할 때는 하던 일을 멈추고 바라보며, 높임 표현을 써서 공손한 태도와 말투로 말해요."},
+
+ {e:"📚", t:"도서관에서 친구에게 책을 보여 주고 싶을 때", tags:["장소"],
+  scene:"도서관에서 정말 재미있는 책을 발견했어요. 건너편 자리의 친구 지우에게 보여 주고 싶어요. 주변에는 책을 읽는 친구들이 많아요.",
+  roles:[{n:"나",e:"🧒",me:1},{n:"지우",e:"👧"}],
+  lines:[
+   {r:0,t:"<i>(지우 옆으로 조용히 걸어가서)</i>"},
+   {r:0,b:1,h:"도서관이라는 장소를 생각하며 작은 목소리로 말을 걸어요.",x:"(작은 목소리로) 지우야, 이 책 좀 볼래? 정말 재미있어."},
+   {r:1,t:"(작게) 우와, 그림이 정말 웃기다!"},
+   {r:0,t:"(웃음이 터질 것 같아서) 크크…"},
+   {r:1,b:1,h:"다른 사람에게 방해가 되지 않도록 어떻게 하자고 말할까요?",x:"(작게) 쉿! 여기서는 조용히 하고, 이야기는 쉬는 시간에 밖에서 더 하자."},
+   {r:0,b:1,h:"친구의 말에 알맞게 대답해요.",x:"(작게) 좋아. 고마워, 지우야."}],
+  point:"도서관, 박물관, 병원 같은 공공장소에서는 다른 사람에게 방해가 되지 않도록 조용히 대화해요."},
+
+ {e:"🎯", t:"모둠 활동 중에 딴 이야기가 나올 때", tags:["목적"],
+  scene:"사회 시간에 '우리 고장의 자랑거리 정하기' 모둠 활동을 하고 있어요. 그런데 친구 서준이가 갑자기 다른 이야기를 해요.",
+  roles:[{n:"나",e:"🧒",me:1},{n:"서준",e:"👦"}],
+  lines:[
+   {r:0,t:"우리 모둠은 고장의 자랑거리로 무엇을 소개할까?"},
+   {r:1,t:"그런데 너 어제 축구 경기 봤어? 진짜 재미있었는데!"},
+   {r:0,b:1,h:"기분 나쁘지 않게, 지금 무엇을 하는 시간인지 알려 줘요.",x:"축구 이야기는 쉬는 시간에 하자. 지금은 모둠 활동 중이야."},
+   {r:1,b:1,h:"사과하고, 주제와 관련 있는 의견을 말해요.",x:"아, 미안. 나는 해운대 바닷가를 소개하고 싶어."},
+   {r:0,t:"좋은 생각이야! 그럼 그 까닭도 함께 정리해 보자."}],
+  point:"대화하는 목적을 생각해서 주제와 관련 있는 말을 해요. 모둠 활동 중에는 모둠 활동에 집중해요."},
+
+ {e:"🤫", t:"여럿이 함께 놀 때 귓속말을 하고 싶을 때", tags:["상대"],
+  scene:"쉬는 시간에 나, 짝, 민지 셋이서 보드게임을 하고 있어요. 그런데 짝에게만 몰래 하고 싶은 말이 생겼어요.",
+  roles:[{n:"나",e:"🧒",me:1},{n:"짝",e:"🧑"}],
+  lines:[
+   {r:0,t:"<i>(짝에게 귓속말을 하려고 다가가며)</i> 있잖아, 이건 너한테만 말해 줄게…"},
+   {r:1,b:1,h:"민지가 소외감을 느끼지 않도록 어떻게 하자고 말할까요?",x:"민지도 같이 있으니까 귓속말하지 말고 다 같이 이야기하자."},
+   {r:0,t:"아, 그러네. 민지가 서운했겠다."},
+   {r:0,b:1,h:"민지도 함께 들을 수 있게 다시 말해요.",x:"민지야, 다음 판에는 우리 셋이 규칙을 바꿔서 해 보면 어때?"},
+   {r:1,t:"좋아! 다 같이 이야기하니까 더 재미있다."}],
+  point:"여럿이 함께 있을 때 귓속말을 하면 다른 친구가 소외감을 느끼거나 오해할 수 있으니 주의해요."},
+
+ {e:"☎️", t:"전화했는데 친구 어머니께서 받으셨을 때", tags:["방식","상대"],
+  scene:"내일 준비물을 물어보려고 친구 서연이네 집에 전화를 걸었어요. 그런데 서연이 어머니께서 전화를 받으셨어요.",
+  roles:[{n:"나",e:"🧒",me:1},{n:"서연이 어머니",e:"👩"}],
+  lines:[
+   {r:1,t:"<i>(따르릉)</i> 여보세요?"},
+   {r:0,b:1,h:"인사를 하고, 내가 누구인지 밝혀요.",x:"안녕하세요? 저는 서연이 친구 {나:예요}."},
+   {r:1,t:"그래, 안녕? 무슨 일이니?"},
+   {r:0,b:1,h:"서연이와 통화할 수 있는지 공손하게 여쭈어요.",x:"서연이와 잠깐 통화할 수 있을까요?"},
+   {r:1,t:"어쩌지, 서연이가 지금 태권도 학원에 갔단다."},
+   {r:0,b:1,h:"전할 말을 부탁드리고, 끝인사를 해요.",x:"그럼 제가 전화했다고 전해 주세요. 안녕히 계세요."}],
+  point:"전화할 때는 내가 누구인지 밝히고, 상대가 누구인지 확인해요. 통화를 마칠 때는 끝인사를 해요."},
+
+ {e:"🍚", t:"친구에게 전화했는데 친구가 저녁을 먹고 있을 때", tags:["방식"],
+  scene:"주말에 같이 놀자고 말하려고 친구 준호에게 전화를 걸었어요. 그런데 준호는 가족과 저녁을 먹는 중이에요.",
+  roles:[{n:"나",e:"🧒",me:1},{n:"준호",e:"👦"}],
+  lines:[
+   {r:1,t:"<i>(따르릉)</i> 여보세요?"},
+   {r:0,t:"준호야, 나 {나:이야}."},
+   {r:0,b:1,h:"전화로는 상대의 상황을 볼 수 없어요. 무엇을 먼저 물어볼까요?",x:"지금 통화하기 괜찮아?"},
+   {r:1,t:"지금 저녁 먹는 중이라서 길게 이야기하기는 어려워."},
+   {r:0,b:1,h:"친구의 상황을 배려해서 말해요.",x:"그럼 밥 다 먹고 나서 내가 다시 전화할게."},
+   {r:1,t:"응, 고마워. 이따가 이야기하자."},
+   {r:0,b:1,h:"통화를 마치는 끝인사를 해요.",x:"응, 맛있게 먹어. 안녕!"}],
+  point:"전화로는 상대의 상황을 볼 수 없으니, 통화하기 괜찮은지 먼저 확인하고 끝인사를 하고 끊어요."},
+
+ {e:"🏫", t:"선생님께서 다른 친구와 이야기하고 계실 때", tags:["상대"],
+  scene:"쉬는 시간에 선생님께 내일 준비물을 여쭈어보려고 해요. 그런데 선생님께서 다른 친구와 이야기를 나누고 계세요.",
+  roles:[{n:"나",e:"🧒",me:1},{n:"선생님",e:"🧑‍🏫"}],
+  lines:[
+   {r:0,t:"<i>(선생님과 친구의 이야기가 끝날 때까지 기다린 뒤)</i>"},
+   {r:0,b:1,h:"말을 걸어도 되는지 공손하게 여쭈어요.",x:"선생님, 여쭈어볼 것이 있는데 지금 잠깐 괜찮으세요?"},
+   {r:1,t:"그럼, 무엇이 궁금하니?"},
+   {r:0,b:1,h:"높임말로 궁금한 점을 분명하게 말해요.",x:"내일 미술 시간 준비물이 무엇인지 알고 싶어요."},
+   {r:1,t:"색연필과 가위를 가져오면 된단다."},
+   {r:0,b:1,h:"고마운 마음을 표현해요.",x:"알려 주셔서 감사합니다!"}],
+  point:"다른 사람이 이야기할 때는 중간에 끼어들지 않고 기다려요. 웃어른께는 높임말로 공손하게 여쭈어요."},
+
+ {e:"🚌", t:"버스 안에서 친구와 이야기할 때", tags:["장소"],
+  scene:"친구와 함께 버스를 타고 박물관에 가고 있어요. 버스 안에는 눈을 감고 쉬고 계신 어른들이 많아요.",
+  roles:[{n:"친구 하준",e:"👦"},{n:"나",e:"🧒",me:1}],
+  lines:[
+   {r:0,t:"<i>(창밖을 보며 큰 소리로)</i> 우와! 저기 광안대교 보인다! 진짜 크다!"},
+   {r:1,b:1,h:"버스 안이라는 장소를 생각해서 친구에게 알려 줘요.",x:"(작게) 하준아, 버스 안이니까 조금 작게 말하자. 쉬고 계신 분들이 많아."},
+   {r:0,b:1,h:"친구의 말을 듣고 어떻게 대답할까요?",x:"(작게) 아, 맞다. 알려 줘서 고마워."},
+   {r:1,t:"(작게) 내리면 광안대교 앞에서 같이 사진 찍자."},
+   {r:0,t:"(작게) 좋아!"}],
+  point:"버스, 지하철 같은 공공장소에서는 주변 사람을 생각해서 작은 목소리로 대화해요."},
+
+ {e:"💬", t:"모둠 토의에서 친구와 의견이 다를 때", tags:["목적","상대"],
+  scene:"학급 행사로 무엇을 할지 모둠 토의를 하고 있어요. 친구 예린이가 먼저 의견을 말하는데, 내 생각은 조금 달라요.",
+  roles:[{n:"예린",e:"👧"},{n:"나",e:"🧒",me:1}],
+  lines:[
+   {r:0,t:"나는 학급 행사로 피구 대회를 하면 좋겠어. 다 함께 뛰면서 더 친해질 수 있으니까."},
+   {r:1,b:1,h:"친구의 말을 끝까지 듣고, 친구 의견을 인정하는 말로 시작해 공손하게 내 생각을 말해요.",x:"네 말도 좋은 생각이야. 그런데 나는 피구를 어려워하는 친구도 있어서 그림 그리기 대회를 하면 좋겠어."},
+   {r:0,t:"그렇구나. 그럼 두 가지를 다 하는 방법도 있을까?"},
+   {r:1,b:1,h:"주제와 관련 있게 해결 방법을 말해요.",x:"앞 시간에는 피구, 뒤 시간에는 그림 그리기를 하면 어떨까?"},
+   {r:0,t:"좋아! 다른 모둠 친구들에게도 물어보자."}],
+  point:"의견이 달라도 친구의 말을 끝까지 듣고, 공손한 말투로 내 생각을 말해요. 자기 생각만 옳다고 강요하지 않아요."},
+
+ {e:"👴", t:"할아버지께 전화로 안부 인사를 드릴 때", tags:["상대","방식"],
+  scene:"멀리 계신 할아버지께 오랜만에 안부 전화를 드리려고 해요.",
+  roles:[{n:"나",e:"🧒",me:1},{n:"할아버지",e:"👴"}],
+  lines:[
+   {r:1,t:"<i>(따르릉)</i> 여보세요?"},
+   {r:0,b:1,h:"높임말로 인사하고, 내가 누구인지 밝혀요.",x:"할아버지, 안녕하세요? 저 {나:예요}."},
+   {r:1,t:"오, 우리 {나:이구나}! 그동안 잘 지냈니?"},
+   {r:0,b:1,h:"내 소식을 전하고, 할아버지의 안부를 여쭈어요.",x:"네, 저는 잘 지내요. 할아버지께서도 건강하시죠?"},
+   {r:1,t:"그럼, 건강하단다. 다음 방학에 꼭 놀러 오렴."},
+   {r:0,b:1,h:"통화를 마치며 공손하게 끝인사를 해요.",x:"네, 꼭 갈게요. 할아버지, 안녕히 계세요!"}],
+  point:"웃어른께 전화할 때는 높임말로 나를 밝히고, 상대의 안부를 여쭈며, 공손하게 끝인사를 해요."}
+];
+
+/* ---------- 상태 ---------- */
+let state = {done:[], used:[], cur:-1, swapped:false};
+function save(){ try{ sessionStorage.setItem("etiquettePair_v2", JSON.stringify(state)); }catch(e){} }
+function load(){ try{ const s=JSON.parse(sessionStorage.getItem("etiquettePair_v2")); if(s) state=Object.assign(state,s); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+let drawing = false;
+
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ---------- 처음 화면 ---------- */
+function renderGrid(){
+  $("grid").innerHTML = S.map((s,i)=>`
+    <button class="card ${state.done.includes(i)?'done':''}" id="c${i}" onclick="openSit(${i})">
+      <div class="no">${i+1}</div>
+      <div class="em">${s.e}</div>
+      <div class="ttl">${esc(s.t)}</div>
+      ${s.tags.map(t=>`<span class="tag t-${t}">${t}</span>`).join(" ")}
+    </button>`).join("");
+}
+
+function pickIndex(){
+  let pool = S.map((_,i)=>i).filter(i=>!state.used.includes(i) && i!==state.cur);
+  if(pool.length===0){ state.used=[]; pool=S.map((_,i)=>i).filter(i=>i!==state.cur); }
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function enterFS(){
+  try{
+    const el=document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen) el.requestFullscreen().catch(()=>{});
+      else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    }
+  }catch(e){}
+}
+function draw(){
+  enterFS();
+  if(drawing) return;
+  drawing = true; $("drawBtn").disabled = true;
+  const target = pickIndex();
+  let steps = 16 + Math.floor(Math.random()*4), k = 0, idx = Math.floor(Math.random()*S.length), delay = 60;
+  const tick = () => {
+    document.querySelectorAll(".card").forEach(c=>c.classList.remove("hl"));
+    if(k >= steps){
+      const c=$("c"+target); c.classList.add("hl","pick");
+      setTimeout(()=>{ drawing=false; $("drawBtn").disabled=false; openSit(target,true); }, 900);
+      return;
+    }
+    idx = (idx + 1 + Math.floor(Math.random()*3)) % S.length;
+    if(k === steps-1) idx = target;
+    $("c"+idx).classList.add("hl");
+    k++; delay *= 1.13;
+    setTimeout(tick, delay);
+  };
+  tick();
+}
+
+function nextSituation(){
+  enterFS();
+  goHome();
+  setTimeout(draw, 250);
+}
+
+/* ---------- 상황 화면 ---------- */
+function roleName(ri){
+  // 역할 ri 를 맡은 짝: 기본은 역할0=짝A, 역할1=짝B / 바꾸면 반대
+  const isA = state.swapped ? ri===1 : ri===0;
+  return isA ? {pair:"짝 A", dot:"🔵"} : {pair:"짝 B", dot:"🔴"};
+}
+function meName(s){ return "○○"; }
+function batchim(w){ const c=w.charCodeAt(w.length-1); return c>=0xAC00&&c<=0xD7A3 && (c-0xAC00)%28!==0; }
+function josa(w,j){
+  const b = batchim(w);
+  switch(j){
+    case "야": return b?"아":"야";
+    case "가": return b?"이가":"가";
+    case "예요": return b?"이에요":"예요";
+    case "이야": return b?"이야":"야";
+    case "이구나": return b?"이구나":"구나";
+    default: return j||"";
+  }
+}
+function fill(text, s){
+  const nm = meName(s);
+  return text.replace(/\{나(?::([^}]+))?\}/g, (m,j)=> nm + josa(nm,j));
+}
+
+function openSit(i, fromDraw){
+  state.cur = i;
+  if(!state.used.includes(i)) state.used.push(i);
+  state.swapped = false;
+  save();
+  renderSit();
+  $("home").style.display="none"; $("sit").style.display="block";
+  window.scrollTo({top:0});
+}
+
+function renderSit(){
+  const s = S[state.cur];
+  $("sEmoji").textContent = s.e;
+  $("sNum").textContent = `상황 ${state.cur+1}`;
+  $("sTitle").textContent = s.t;
+  const J={상대:"상대를",장소:"장소를",목적:"목적을",방식:"방식을"};
+  $("sTags").innerHTML = s.tags.map(t=>`<span class="t-${t}">${J[t]} 생각해요</span>`).join("");
+  $("sScene").innerHTML = `<b>어떤 상황일까요?</b>${esc(s.scene)}`;
+  [0,1].forEach(ri=>{
+    const r=s.roles[ri], p=roleName(ri);
+    $("role"+ri).innerHTML = `<span class="re">${r.e}</span><span>${p.dot} ${p.pair}<small>${esc(r.n)} 역할</small></span>`;
+  });
+  $("script").innerHTML = s.lines.map((l,li)=>{
+    const r = s.roles[l.r], side = l.r===0 ? "left":"right";
+    const who = esc(r.n);
+    let inner;
+    if(l.b){
+      inner = `<div class="bub blank"><span class="q">( ? ) 내가 말해 보기</span><span class="hint">${esc(l.h)}</span>
+        <button class="exBtn" onclick="toggleEx(${li})">예시 보기</button>
+        <div class="ex" id="ex${li}">${esc(fill(l.x,s))}</div></div>`;
+    } else {
+      inner = `<div class="bub">${fill(l.t,s).replace(/&(?!lt;|gt;|amp;)/g,"&amp;")}</div>`;
+    }
+    return `<div class="line ${side}"><div class="ava"><div class="e">${r.e}</div><div class="n">${who}</div></div>${inner}</div>`;
+  }).join("");
+  $("pointBox").textContent = s.point;
+  $("pointBox").classList.remove("show");
+  $("openPoint").style.display = "inline-block";
+  document.querySelectorAll("#checks input").forEach(c=>c.checked=false);
+}
+
+function toggleEx(li){ $("ex"+li).classList.toggle("show"); }
+function swapRoles(){
+  state.swapped = !state.swapped; save();
+  renderSit();
+  const c=document.querySelectorAll("#checks input")[2]; if(c) c.checked=true;
+}
+function showPoint(){
+  $("pointBox").classList.add("show"); $("openPoint").style.display="none";
+  if(!state.done.includes(state.cur)){ state.done.push(state.cur); save(); }
+}
+
+function goHome(){
+  $("sit").style.display="none"; $("home").style.display="block";
+  renderGrid(); window.scrollTo({top:0});
+}
+
+function toggleFS(){
+  try{ if(document.fullscreenElement||document.webkitFullscreenElement){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); } else enterFS(); }catch(e){}
+}
+
+/* ---------- 시작 ---------- */
+load();
+if(state.cur>=0){ renderGrid(); renderSit(); $("home").style.display="none"; $("sit").style.display="block"; }
+else goHome();
+</script>
+</body>
+</html>
